@@ -12,3 +12,8 @@ export const getDate = () => {
     const fullDate = `${dd}.${mm}.${yyyy}` 
     return fullDate
 }
+
+export const buildImageList = (data) => {
+    const sliderImages = data.map(item => item.urlToImage)
+    return sliderImages
+}

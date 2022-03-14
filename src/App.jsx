@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { getDate } from './helpers/';
+import { getDate, buildImageList } from './helpers/';
 import Header from './components/Header';
+import Form from './components/Form';
 import NewsList from './components/NewsList';
 import Footer from './components/Footer';
 
@@ -24,11 +25,11 @@ const App = () => {
   const URL = `https://newsapi.org/v2/everything?q=${search}&to=${todaysDate.current}&language=${language}&pageSize=50&sortBy=popularity&page=1&apiKey=${API_KEY}`;
 
   useEffect(() => {
-    // setData({
-    //   results: null,
-    //   loading: true,
-    //   error: null,
-    // });
+    setData({
+      results: null,
+      loading: true,
+      error: null,
+    });
 
     fetch(URL)
       .then((response) => response.json())
@@ -52,11 +53,18 @@ const App = () => {
   return (
     <main>
       <Header
+        todaysDateDisplay={getDate()}
+        images={
+          data.results !== null &&
+          data.results.articles.length > 0 &&
+          buildImageList(data.results.articles)
+        }
+      />
+      <Form
         handleSubmit={handleSubmit}
         language={language}
         languageHandler={languageHandler}
         searchRef={searchRef}
-        todaysDateDisplay={getDate()}
       />
       <NewsList data={data} />
       <Footer footerDate={footerDate} />
